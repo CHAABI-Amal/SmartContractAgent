@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimisation des Smart Contracts avec des Agents IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #007BFF;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f1ff;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mini-projet 10: Optimisation des Smart Contracts avec des Agents IA</h1>
+        <p><span class="highlight">Défi :</span> Développer un système multi-agent pour optimiser les smart contracts en utilisant l'IA.</p>
+
+        <div class="section">
+            <h2>Agent d'optimisation des frais de gaz</h2>
+            <button onclick="fetchGasPrice()">Optimiser les frais de gaz</button>
+            <div id="gas-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>Agent de sécurité</h2>
+            <button onclick="fetchSecurityReport()">Vérifier la sécurité</button>
+            <div id="security-result" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>Agent de gestion dynamique</h2>
+            <button onclick="fetchContractBalance()">Vérifier le solde du contrat</button>
+            <div id="balance-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour récupérer le prix optimal du gaz
+        function fetchGasPrice() {
+            fetch('http://127.0.0.1:5001/optimize_gas')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('gas-result').textContent = `Prix optimal du gaz : ${data.optimal_gas_price} Gwei`;
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+
+        // Fonction pour récupérer le rapport de sécurité
+        function fetchSecurityReport() {
+            fetch('http://127.0.0.1:5001/security_check')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('security-result').textContent = `Rapport de sécurité : ${data.security_report}`;
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+
+        // Fonction pour récupérer le solde du smart contract
+        function fetchContractBalance() {
+            fetch('http://127.0.0.1:5001/contract_balance')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('balance-result').textContent = `Solde du contrat : ${data.contract_balance} ETH`;
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+    </script>
+</body>
+</html>
