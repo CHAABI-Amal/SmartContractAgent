@@ -12,7 +12,7 @@ dynamic_agent = DynamicManagementAgent("0x2CaD54232302141E6775488ABaF99A99bae9C7
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Assure-toi que le fichier index.html est dans un dossier 'templates'
+    return render_template('index.html')  
 
 @app.route('/optimize_gas', methods=['GET'])
 def optimize_gas():
