@@ -12,19 +12,13 @@ class GasOptimizationQLearning:
         self.epsilon = epsilon  # Probabilité d'explorer au lieu d'exploiter
 
     def get_gas_price(self):
-        gas_price = self.web3.eth.gas_price
-        print(f"[INFO] Prix actuel du gaz : {gas_price} Gwei")
-        return gas_price
+        return self.web3.eth.gas_price
 
     def choose_action(self, state):
         """ Choisit la meilleure action (ou explore aléatoirement) """
         if random.uniform(0, 1) < self.epsilon:
-            action = random.choice([-50, -10, 0, 10, 50])  # Exploration aléatoire
-            print(f"[EXPLORATION] Action choisie aléatoirement : {action}")
-        else:
-            action = max(self.q_table.get(state, {}), key=self.q_table.get(state, {}).get, default=0)
-            print(f"[EXPLOITATION] Meilleure action connue : {action}")
-        return action
+            return random.choice([-50, -10, 0, 10, 50])  # Exploration aléatoire
+        return max(self.q_table.get(state, {}), key=self.q_table.get(state, {}).get, default=0)
 
     def update_q_table(self, state, action, reward, next_state):
         """ Met à jour la Q-Table avec la nouvelle récompense """
@@ -37,15 +31,23 @@ class GasOptimizationQLearning:
         best_future_reward = max(self.q_table.get(next_state, {}).values(), default=0)
         self.q_table[state][action] += self.alpha * (reward + self.gamma * best_future_reward - self.q_table[state][action])
 
-        print(f"[UPDATE Q-TABLE] État: {state} | Action: {action} | Récompense: {reward} | Prochain état: {next_state}")
-
     def optimize_gas(self):
         """ Entraîne l'agent Q-Learning """
-        state = self.get_gas_price()
-        action = self.choose_action(state)
-        next_state = state + action  # Simule un changement de prix
+        state = self.get_gas_price()  # Obtenir le prix du gaz actuel
+        print(f"[DEBUG] État actuel (prix du gaz) : {state}")
+
+        action = self.choose_action(state)  # Choisir une action (explorer ou exploiter)
+        print(f"[DEBUG] Action choisie : {action}")
+
+        next_state = state + action  # Simuler le nouvel état
+        print(f"[DEBUG] Prochain état : {next_state}")
+
         reward = -abs(action)  # Plus l'ajustement est faible, mieux c'est
-        self.update_q_table(state, action, reward, next_state)
+        print(f"[DEBUG] Récompense : {reward}")
+
+        self.update_q_table(state, action, reward, next_state)  # Mettre à jour la Q-Table
+        print(f"[DEBUG] Q-Table après mise à jour : {self.q_table}")
 
         print(f"[OPTIMIZATION] Prix optimal du gaz recommandé : {next_state} Gwei")
         return next_state
+
